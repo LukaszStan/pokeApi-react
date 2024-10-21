@@ -1,0 +1,5 @@
+{
+  "/_not-found/page": "app/_not-found/page.js",
+  "/pokemon/[id]/page": "app/pokemon/[id]/page.js",
+  "/pokemon/[id]/abilities/[abilityId]/page": "app/pokemon/[id]/abilities/[abilityId]/page.js"
+}
