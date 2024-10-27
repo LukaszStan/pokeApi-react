@@ -1,7 +1,15 @@
 // /app/pokemon/[id]/abilities/[abilityId/page.js
 
-async function getAbility(abilityId) {
-    const res = await fetch(`https://pokeapi.co/api/v2/ability/${abilityId}`);
+async function getPokemon(pokemonId) {
+    const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemonId}`);
+    if (!res.ok) {
+        throw new Error('Failed to fetch Pokemon data');
+    }
+    return res.json();
+}
+
+async function getAbilityDetails(url) {
+    const res = await fetch(url);
     if (!res.ok) {
         throw new Error('Failed to fetch ability data');
     }
@@ -9,19 +17,38 @@ async function getAbility(abilityId) {
 }
 
 export default async function AbilityPage({ params }) {
-    const ability = await getAbility(params.abilityId);
+    const { id: pokemonId, abilityId } = params;
+
+    const pokemon = await getPokemon(pokemonId);
+
+    const abilityInfo = pokemon.abilities[parseInt(abilityId) - 1];
+    if (!abilityInfo) {
+        return (
+            <div>
+                <h1>{pokemon.name}</h1>
+                <p>Pokemon nie posiada umiejętności o indeksie {abilityId}.</p>
+            </div>
+        );
+    }
+
+    const abilityDetails = await getAbilityDetails(abilityInfo.ability.url);
+
+    const effectEntry = abilityDetails.effect_entries.find((entry) => entry.language.name === 'en');
+    const flavorText = abilityDetails.flavor_text_entries.find((entry) => entry.language.name === 'en');
 
     return (
         <div>
-            <h1>{ability.name}</h1>
-            <p>{ability.effect_entries[0].effect}</p>
-
-            <h2>Pokemony, które mają tę umiejętność:</h2>
-            <ul>
-                {ability.pokemon.map((poke) => (
-                    <li key={poke.pokemon.name}>{poke.pokemon.name}</li>
-                ))}
-            </ul>
+            <h1>Umiejętność: {abilityDetails.name} dla {pokemon.name}</h1>
+            {effectEntry && (
+                <p>
+                    <strong>Efekt:</strong> {effectEntry.effect}
+                </p>
+            )}
+            {flavorText && (
+                <p>
+                    <strong>Opis:</strong> {flavorText.flavor_text}
+                </p>
+            )}
         </div>
     );
 }

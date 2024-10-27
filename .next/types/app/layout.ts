@@ -1,4 +1,4 @@
-// File: D:\WORK\s27131\zajecia4tfntbk\app\layout.js
+// File: C:\Users\chudy\Desktop\studia\TFN i TBK\pokeApi-react\app\layout.js
 import * as entry from '../../../app/layout.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 
