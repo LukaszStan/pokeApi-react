@@ -26,8 +26,6 @@ export default function PokemonListPage() {
     const searchParams = useSearchParams();
     const type = searchParams.get('type');
     const sort = searchParams.get('sort');
-
-    const [pokemonList, setPokemonList] = useState([]);
     const [filteredPokemonList, setFilteredPokemonList] = useState([]);
 
     useEffect(() => {
